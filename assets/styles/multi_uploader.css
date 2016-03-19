@@ -1,0 +1,14 @@
+.mutiupload_list div {
+	margin: 5px;
+    padding: 5px;
+    border: 1px solid #0000ff;
+    height: auto;
+    width: auto;
+    float: left;
+    text-align: center;
+    display: inline;
+}
+
+.mutiupload_list div.img a:hover img {
+    border:1px solid #0000ff;
+}

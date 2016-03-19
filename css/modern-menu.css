@@ -1,0 +1,176 @@
+@charset "utf-8";
+
+/* Modern Menu */
+.modern-menu {
+/*	width: 600px; */
+	height: 40px;
+	font-family: "Arial Narrow", sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	position: relative;
+	clear: both;
+	float:right;
+	direction:rtl;
+	
+}
+.modern-menu.mm-vertical {
+	width: 184px;
+	height: auto;
+	direction:rtl;
+	float:right;
+}
+
+/* General reset */
+.modern-menu, .modern-menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+		direction:rtl;
+		float:right;
+
+}
+
+	/* A button item */
+	.modern-menu li {
+		position: relative;
+		direction:rtl;
+	}
+
+	/* A button */
+	.modern-menu a {
+		height: 100%;
+		text-decoration: none;
+		display: block;
+		position: relative;
+		overflow: hidden;
+		z-index: 101;
+		border: none;
+		position: relative;
+		direction:rtl;
+
+	}
+
+	/* The label of a button */
+	.modern-menu a span {
+		line-height: 40px;
+		padding: 0 10px;
+		display: block;
+		direction:rtl;
+
+	}
+	.modern-menu.mm-vertical a span {
+		line-height: 36px;
+		direction:rtl;
+	}
+
+	/* The label of a button with a dropdown */
+	.mm-container.mm-drop span {
+		padding-right: 15px;
+		direction:rtl;
+	}
+
+	/* A horizontal label container */
+	.mm-horizontal span {
+		float: left;
+		direction:rtl;
+	}
+
+	/* The label of a button with a dropdown */
+	.mm-hdrop, .mm-hdrop-over, .mm-vdrop, .mm-vdrop-over {
+		background-repeat: no-repeat;
+		background-position: center right;
+		padding-right: 20px;
+		direction:rtl;
+	}
+
+	/* A button on the right side */
+	.modern-menu .mm-right {
+		display: block;
+		float: left;
+		direction:rtl;
+	}
+
+	/* The top buttons */
+	.modern-menu > li {
+		float: right;
+		direction:rtl;
+	}
+	.modern-menu.mm-vertical > li {
+		float: none;
+		direction:rtl;
+			
+
+	}
+
+	/* A group of buttons */
+	.mm-group li {
+		float: left;
+		direction:rtl;
+	}
+	.modern-menu .mm-group span {
+		line-height: 40px;
+	}
+
+		/* The label of a subbutton */
+		.modern-menu ul span {
+			line-height: 36px;
+			direction:rtl;
+
+		}
+
+		/* A dropdown of a button */
+		.modern-menu li > ul {
+			width: 155px;
+			font-size: 14px;
+			position: absolute;
+			left: -5000px;
+			opacity: 0;
+			z-index: 100;
+			direction:rtl;
+		}
+
+		/* A dropdown of a vertical menu */
+		.mm-vertical li > ul {
+			top: 0;
+			direction:rtl;
+		}
+
+		/* Dropdowns from level 2 onwards */
+		.modern-menu ul ul {
+			float: right;
+			top: 0;
+			direction:rtl;
+		}
+/* Theme 6 */
+.theme6 {
+	background-color: #505050;
+	direction:rtl;
+}
+.theme6 a span {
+	color: #e0e0e0;
+	background-color: #505050;
+	direction:rtl;
+
+}
+.theme6 .mm-over {
+	color: #404040;
+	background-color: #f0f0f0;
+	direction:rtl;
+}
+.theme6 .mm-hdrop {
+	background-image: url("../images/theme6/hdrop.png");
+	direction:rtl;
+}
+.theme6 .mm-hdrop-over {
+	background-image: url("../images/theme6/hdrop-over.png");
+	direction:rtl;
+}
+.theme6 .mm-vdrop {
+	background-image: url("../images/theme6/vdrop.png");
+	direction:rtl;
+}
+.theme6 .mm-vdrop-over {
+	background-image: url("../images/theme6/vdrop-over.png");
+	direction:rtl;
+}
+

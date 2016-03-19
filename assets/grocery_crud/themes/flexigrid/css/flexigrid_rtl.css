@@ -1,0 +1,146 @@
+@charset "UTF-8";
+.flexigrid {
+	font-family:Tahoma,Helvetica,sans-serif !important;
+	direction: rtl;
+}
+/*.flexigrid div.mDiv div.ptogtitle {
+	left: 3px !important;
+	right: none !important;
+	float: right;
+}*/
+.flexigrid div.nDiv {
+	right:0px;
+	float: right;
+}
+.flexigrid div.nBtn div {
+
+	float: right;
+}
+.flexigrid div.tDiv2 {
+	float: right;
+}
+.flexigrid div.tDiv3 {
+	float:right;
+	padding:1px;
+}
+
+.flexigrid div.sDiv2 {
+	float: right;
+}
+.flexigrid div.btnseparator {
+	float: right;
+}
+.flexigrid div.fbutton {
+	float: right;
+}
+.flexigrid div.fbutton div {
+	float: right;
+}
+.flexigrid div.fbutton span {
+	float: right;
+}
+.flexigrid div.cDrag {
+	float: right;
+}
+.flexigrid div.cDrag div {
+	float: right;
+}
+.form-display-as-box
+{
+	float: right;
+}
+.form-input-box
+{
+	float: right;
+}
+.flexigrid div.form-button-box {
+	float: right;
+	margin-right: 10px;
+	margin-left: 1px;
+}
+.flexigrid div.hDiv span.cdropright {
+	float:right;
+}
+.flexigrid div.pDiv div.pDiv2 {
+	float: right;
+}
+div.pGroup {
+	float: right;
+}
+.flexigrid div.pDiv div.pButton {
+	float: right;
+}
+.flexigrid div.pDiv div.pButton span {
+	float: right;
+}
+.flexigrid .search-div-clear-button
+{
+	float:right;
+}
+.flexigrid .edit-icon
+{
+	float:right;
+}
+
+.text-left
+{
+	text-align: right;	
+}
+.text-right
+{
+	text-align: left;	
+}
+.floatL
+{
+	float: right;	
+}
+.floatR
+{
+	float: left;	
+}
+.report-div
+{
+	font-family: Tahoma,Helvetica,sans-serif;
+}
+.flexigrid  .ftitle-left
+{
+	float: right;
+	padding-right: 20px !important;
+}
+.flexigrid  .ftitle-right
+{
+	float: left;	
+}
+.crud-action
+{
+	float:right;
+}
+.search-choice-close
+{
+	right: 14px !important;
+}
+.flexigrid .pFirst {
+	background:url(images/last.gif) no-repeat center;
+}
+.flexigrid .pPrev {
+	background:url(images/next.gif) no-repeat center;
+}
+.flexigrid .pNext {
+	background:url(images/prev.gif) no-repeat center;
+}
+.flexigrid .pLast {
+	background:url(images/first.gif) no-repeat center;
+}
+.flexigrid .pReload {
+	background:url(images/load.png) no-repeat center;
+}
+.flexigrid .pReload.loading,.flexigrid .fbutton.loading{
+	background:url(images/load.gif) no-repeat center;
+}
+.form-display-as-box .required
+{
+	display:inline-block;
+	color : red;
+	margin: auto 3px;
+}
+/* End of twitter bootstrap buttons */

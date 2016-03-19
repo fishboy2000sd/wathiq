@@ -1,0 +1,125 @@
+﻿/**/
+/* normal state */
+/**/
+.sky-form .toggle i:before {
+	background-color: #43bf43;	
+}
+.sky-form .button {
+	background-color: #43bf43;
+}
+
+
+/**/
+/* hover state */
+/**/
+.sky-form .input:hover input,
+.sky-form .select:hover select,
+.sky-form .textarea:hover textarea,
+.sky-form .radio:hover i,
+.sky-form .checkbox:hover i,
+.sky-form .toggle:hover i,
+.sky-form .ui-slider-handle:hover {
+	border-color: #91e393;
+}
+.sky-form .rating input + label:hover,
+.sky-form .rating input + label:hover ~ label {
+	color: #43bf43;
+}
+
+
+/**/
+/* focus state */
+/**/
+.sky-form .input input:focus,
+.sky-form .select select:focus,
+.sky-form .textarea textarea:focus,
+.sky-form .radio input:focus + i,
+.sky-form .checkbox input:focus + i,
+.sky-form .toggle input:focus + i {
+	border-color: #43bf43;
+}
+
+
+/**/
+/* checked state */
+/**/
+.sky-form .radio input + i:after {
+	background-color: #43bf43;	
+}
+.sky-form .checkbox input + i:after {
+	color: #43bf43;
+}
+.sky-form .radio input:checked + i,
+.sky-form .checkbox input:checked + i,
+.sky-form .toggle input:checked + i {
+	border-color: #43bf43;	
+}
+.sky-form .rating input:checked ~ label {
+	color: #43bf43;	
+}
+html, body {
+	margin: 0;
+	padding: 0;
+	background-attachment: fixed;
+	background-position: 50% 50%;
+	background-size: cover;
+}
+a {
+	text-decoration: underline;
+}
+a:hover {
+	text-decoration: none;
+}
+.bg-red {
+	background-image: url(../img/bg-red.jpg);
+}
+.bg-orange {
+	background-image: url(../img/bg-orange.jpg);
+}
+.bg-yellow {
+	background-image: url(../img/bg-yellow.jpg);
+}
+.bg-green {
+	background-image: url(../images/bg-green.jpg);
+}
+.bg-cyan {
+	background-image: url(../images/bg-cyan.jpg);
+}
+.bg-blue {
+	background-image: url(../images/bg-blue.jpg);
+}
+.bg-purple {
+	background-image: url(../img/bg-purple.jpg);
+}
+.bg-pink {
+	background-image: url(../img/bg-pink.jpg);
+}
+.bg-black {
+	background-image: url(../img/bg-black.jpg);
+}
+
+.body {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 40px;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+}
+.body-s {
+	max-width: 400px;
+}
+.modal {
+	padding: 25px 30px;
+	background: rgba(255,255,255,0.9);
+	font: 13px/1.55 'Open Sans', Helvetica, Arial, sans-serif;
+	color: #666;
+}
+.modal a {
+	color: #2da5da;
+}
+
+@media screen and (max-width: 600px) {
+	.body {
+		padding: 20px;
+	}
+}
