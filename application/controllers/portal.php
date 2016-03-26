@@ -158,7 +158,7 @@ class Portal extends MY_Controller {
 
 	function insert_status_callback($post_array) { 
 		//$post_array['created_at'] = date('Y-m-d h:i:s'); //2015-09-04 00:00:00
-		$post_array['project_status_id'] = 1;
+		$post_array['phase_id'] = 1;
 		 
 		return $post_array;
 	}
@@ -170,8 +170,8 @@ class Portal extends MY_Controller {
 		//		('.DATE_FORMAT($post_array['started_date'].',"%m-%d-%Y %T"),'. $post_array["project_status_id"].','.$primary_key.')';
 		$str = str_replace('/', '-', $post_array['started_date']);
 		$date = strtotime($str);
-		$qry = 'INSERT INTO project_phase (start_date, project_status_id, project_id) values("'.
-				date("Y-m-d h:i:s", $date).'",'. $post_array["project_status_id"].','.$primary_key.')';
+		$qry = 'INSERT INTO project_phase (start_date, phase_id, project_id) values("'.
+				date("Y-m-d h:i:s", $date).'",'. $post_array["phase_id"].','.$primary_key.')';
 
 		//log_message('info', $str);
 		//log_message('info', $date);
@@ -247,35 +247,68 @@ class Portal extends MY_Controller {
 		$this->config->set_item('grocery_crud_default_per_page',10);
 
 		$crud = new grocery_CRUD();
-		$param = $this->uri->segment(4);		
+		$param = $this->uri->segment(4);
+		$extra = array();
+
+		
+		$query = $this->db->get('phase');
+		$extra['phases'] = $query->result();
+
 		$this->db->from('project')->where('id', $param);
 		//$this->db->where('id', $param);
 		$rs = $this->db->get();
 		if($rs->num_rows() > 0)
-			$crud->project_status_id = $rs->row()->project_status_id;
+			$crud->phase_id = $rs->row()->phase_id;
 		else
-			$crud->project_status_id = 1;
+			$crud->phase_id = 1;
 		//$crud->set_theme('datatables');
 		$crud->set_table('project');
 		$crud->set_subject($this->lang->line('project'));
 		$crud->set_language("arabic"); 
 		$crud->order_by('id','desc');
-		$data['crud'] = $crud;
-		//fields to be displayed in view table
-		$this->load->view("project/status_".$crud->project_status_id, $data);
+		
 		//$crud->callback_before_update(array($this,'update_status_callback'));
-		if($crud->project_status_id == 1){
+		if($crud->phase_id == 2){
+			$this->db->from('project')->where('id', $param);
+			//$this->db->where('id', $param);
+			$rs = $this->db->get();
+			$contract_model_id = 1;
+			$contract_phase_id = 1;
+			//echo "<pre>"; print_r( $rs->row() ); echo "</pre>"; exit;
+			if($rs->num_rows() > 0){
+				$contract_model_id = $rs->row()->contract_model_id;
+				$contract_phase_id = $rs->row()->contract_phase_id;
+			}else{
+				$crud->contract_model_id = $contract_model_id;
+				$crud->contract_phase_id = $contract_phase_id;
+			}
+
+			$this->db->from('contract_phase')->where('contract_model_id', 1);
+			$query = $this->db->get();
+
+			$extra['contracts'] = $query->result();
+			$extra['contract_phase_id'] = $contract_phase_id;
+
+			
+				
+		}else
+		if($crud->phase_id == 1){
 			$crud->callback_before_insert(array($this,'insert_status_callback'));
 			$crud->callback_after_insert(array($this,'after_insert_project_callback'));
 		}else
-		if($crud->project_status_id == 3){
-			$crud->callback_update(array($this,'do_nothindg'));
+		if($crud->phase_id == 3){
+			//$crud->callback_update(array($this,'do_nothindg'));
 			$crud->callback_after_update(array($this,'after_update_project_callback'));
 		}else
-		if($crud->project_status_id == 5){
-			$crud->callback_update(array($this,'do_nothindg'));
+		if($crud->phase_id == 5){
+			//$crud->callback_update(array($this,'do_nothindg'));
 			$crud->callback_after_update(array($this,'after_update_project_callback'));
 		}
+		$crud->set_extra($extra);
+
+		$data['crud'] = $crud;
+		//fields to be displayed in view table
+		$this->load->view("project/status_".$crud->phase_id, $data);
 		
 		if(! $this->has_privilege('read_project'))
 			$crud->unset_read();
@@ -320,6 +353,12 @@ class Portal extends MY_Controller {
 			
 		$output = $crud->render();
 
+		//echo "<pre>"; print_r( $output ); echo "</pre>"; exit;
+
+
+		//$output = (object) array_merge( (array)$output, $extra);
+		//$output->extra = $extra;
+
 		/*$this->load->model('grocery_CRUD_Model');
 		$this->grocery_CRUD_Model->set_basic_table('project');
 		$this->grocery_CRUD_Model->where('id', 2);
@@ -341,6 +380,8 @@ class Portal extends MY_Controller {
 
 		$this->_template($output);
 	}
+
+
 
 	public function project_status_management()
 	{
@@ -388,7 +429,34 @@ class Portal extends MY_Controller {
 		$this->_template($output);
 	}
 
-	
+	public function deliverables_status_management()
+	{
+		
+		
+		//$this->config->set_item('grocery_crud_dialog_forms',true);
+		$this->config->set_item('grocery_crud_default_per_page',10);
+
+		$crud = new grocery_CRUD();
+
+		//$crud->set_theme('datatables');
+		$crud->set_table('deliverable_status');
+		$crud->set_subject($this->lang->line('status_name'));
+		$crud->set_language("arabic"); 
+		//fields to be displayed in view table
+		$crud->columns('id', 'name');
+		
+		
+		$crud->display_as('name', $this->lang->line('status_name'));
+		$crud->display_as('id', $this->lang->line('id'));
+
+
+		//fields will be displayed in add/edit form
+		$crud->fields('name');
+			
+		$output = $crud->render();
+
+		$this->_template($output);
+	}
 
 	public function deliverables_management()
 	{
@@ -406,9 +474,9 @@ class Portal extends MY_Controller {
 		$crud->order_by('id','desc');
 		//fields to be displayed in view table
 		$crud->columns('id', 'inbox_date', 'outbox_date', 'inbox_no', 'outbox_no', 'revision_start_date', 
-			'actual_revision_start_date', 'revision_finish_date', 'actual_revision_finish_date', 'close_date', 'actual_close_date', 'project_subphase_id');
+			'actual_revision_start_date', 'revision_finish_date', 'actual_revision_finish_date', 'close_date', 'actual_close_date', 'project_phase_id');
 		
-		$crud->set_relation('project_subphase_id','project_subphase','name');
+		$crud->set_relation('project_phase_id','project_phase','name');
 
 		$crud->display_as('inbox_date', $this->lang->line('inbox_date'));
 		$crud->display_as('outbox_date', $this->lang->line('outbox_date'));
@@ -420,12 +488,12 @@ class Portal extends MY_Controller {
 		$crud->display_as('actual_revision_finish_date', $this->lang->line('actual_revision_finish_date'));
 		$crud->display_as('close_date', $this->lang->line('close_date'));		
 		$crud->display_as('actual_close_date', $this->lang->line('actual_close_date'));
-		$crud->display_as('project_subphase_id', $this->lang->line('project_subphase_name'));
+		$crud->display_as('project_phase_id', $this->lang->line('project_phase_name')."/".$this->lang->line('project_subphase_name'));
 
 
 		//fields will be displayed in add/edit form
 		$crud->fields('inbox_date', 'outbox_date', 'inbox_no', 'outbox_no', 'revision_start_date', 
-			'actual_revision_start_date', 'revision_finish_date', 'actual_revision_finish_date', 'close_date', 'actual_close_date', 'project_subphase_id');
+			'actual_revision_start_date', 'revision_finish_date', 'actual_revision_finish_date', 'close_date', 'actual_close_date', 'project_phase_id');
 
 
 		//$crud->set_subject('Employee');
@@ -536,7 +604,6 @@ class Portal extends MY_Controller {
 	public function attachement_categories_management()
 	{
 		
-		
 		//$this->config->set_item('grocery_crud_dialog_forms',true);
 		$this->config->set_item('grocery_crud_default_per_page',10);
 
@@ -587,42 +654,6 @@ class Portal extends MY_Controller {
 
 		$this->_template($output);
 	}
-
-	/*public function project_status_management()
-	{
-		
-		
-		//$this->config->set_item('grocery_crud_dialog_forms',true);
-		$this->config->set_item('grocery_crud_default_per_page',10);
-
-		$crud = new grocery_CRUD();
-
-		//$crud->set_theme('datatables');
-		$crud->set_table('project_status');
-		$crud->set_subject($this->lang->line('status_name'));
-		$crud->set_language("arabic"); 
-		//fields to be displayed in view table
-		$crud->columns('id', 'name');
-		
-		
-		$crud->display_as('name', $this->lang->line('status_name'));
-		$crud->display_as('id', $this->lang->line('id'));
-
-
-		//fields will be displayed in add/edit form
-		$crud->fields('name');
-
-
-		//$crud->set_subject('Employee');
-
-		
-		//$crud->set_field_upload('icon','assets/uploads/files');
-				
-			
-		$output = $crud->render();
-
-		$this->_template($output);
-	}*/
 
 	public function owners_management()
 	{
@@ -1360,6 +1391,7 @@ class Portal extends MY_Controller {
 		$this->_template($output);
 	}
 
+	/*
 	public function contract_types_management()
 	{
 		
@@ -1396,6 +1428,7 @@ class Portal extends MY_Controller {
 
 		$this->_template($output);
 	}
+	*/
 	
 	public function contract_categories_management()
 	{
@@ -1495,19 +1528,19 @@ class Portal extends MY_Controller {
 		$crud->set_language("arabic"); 
 		$crud->order_by('id','desc');
 		//fields to be displayed in view table
-		$crud->columns('id','name', 'description', 'order', 'contract_type_id');
-		$crud->set_relation('contract_type_id','contract_type','type');
+		$crud->columns('id','name', 'description', 'phase_order', 'contract_model_id');
+		$crud->set_relation('contract_model_id','contract_model','name');
 		
 		
 		
 		$crud->display_as('name', $this->lang->line('contract_phase_name'));
 		$crud->display_as('description', $this->lang->line('contract_phase_description'));		
-		$crud->display_as('order', $this->lang->line('contract_phase_order'));
-		$crud->display_as('contract_type_id', $this->lang->line('contract_type'));
+		$crud->display_as('phase_order', $this->lang->line('contract_phase_order'));
+		$crud->display_as('contract_model_id', $this->lang->line('contract_model'));
 
 
 		//fields will be displayed in add/edit form
-		$crud->fields('name', 'description', 'order', 'contract_type_id');
+		$crud->fields('name', 'description', 'phase_order', 'contract_model_id');
 
 		//$crud->set_subject('Employee');
 
@@ -1546,6 +1579,7 @@ class Portal extends MY_Controller {
 		$crud->display_as('done', $this->lang->line('done'));
 		$crud->display_as('contract_category_id', $this->lang->line('contract_category'));
 
+		$crud->field_type('done','enum',array('Yes','No'));
 
 		//fields will be displayed in add/edit form
 		$crud->fields('name', 'description', 'percentage', 'page_no', 'done', 'contract_category_id');
@@ -1575,16 +1609,16 @@ class Portal extends MY_Controller {
 		$crud->set_language("arabic"); 
 		$crud->order_by('id','desc');
 		//fields to be displayed in view table
-		$crud->columns('id', 'name', 'duration', 'contract_type_id');
-		$crud->set_relation('contract_type_id','contract_type','type');
+		$crud->columns('id', 'name', 'duration');
+		//$crud->set_relation('contract_type_id','contract_type','type');
 		
 		
 		$crud->display_as('name', $this->lang->line('contract_model_name'));
 		$crud->display_as('duration', $this->lang->line('contract_duration'));
-		$crud->display_as('contract_type_id', $this->lang->line('type'));
+		//$crud->display_as('contract_type_id', $this->lang->line('type'));
 
 		//fields will be displayed in add/edit form
-		$crud->fields('name', 'duration', 'contract_type_id');
+		$crud->fields('name', 'duration');
 
 		//$crud->set_subject('Employee');
 
@@ -1610,7 +1644,85 @@ class Portal extends MY_Controller {
 		$photo_uploader->_save_files_into_db($post_array, $primary_key);
 	}
 
+	public function phase_management()
+	{
+		
+		
+		//$this->config->set_item('grocery_crud_dialog_forms',true);
+		$this->config->set_item('grocery_crud_default_per_page',10);
 
+		$crud = new grocery_CRUD();
+
+		//$crud->set_theme('datatables');
+		$crud->set_table('phase');
+		$crud->set_subject($this->lang->line('project_phase'));
+		$crud->set_language("arabic"); 
+		$crud->order_by('id','desc');
+		//fields to be displayed in view table
+		$crud->columns('id', 'name');
+		
+		$crud->display_as('name', $this->lang->line('project_phase_name'));
+		$crud->display_as('id', $this->lang->line('id'));
+		
+		//fields will be displayed in add/edit form
+		$crud->fields('name');
+
+		//$crud->set_subject('Employee');
+			
+		$output = $crud->render();
+
+		$this->_template($output);
+	}
+
+	public function project_phase_management()
+	{
+		
+		
+		//$this->config->set_item('grocery_crud_dialog_forms',true);
+		$this->config->set_item('grocery_crud_default_per_page',10);
+
+		$crud = new grocery_CRUD();
+
+		//$crud->set_theme('datatables');
+		$crud->set_table('project_phase');
+		$crud->set_subject($this->lang->line('project_phase'));
+		$crud->set_language("arabic"); 
+		$crud->order_by('id','desc');
+		//fields to be displayed in view table
+		$crud->columns('id', 'name', 'description', 'start_date', 'close_date', 'actual_start_date', 'actual_close_date');
+		
+		
+		$crud->display_as('name', $this->lang->line('project_phase_name'));
+		$crud->display_as('id', $this->lang->line('id'));
+		$crud->display_as('description', $this->lang->line('description'));
+		$crud->display_as('start_date', $this->lang->line('start_date'));
+		$crud->display_as('close_date', $this->lang->line('close_date'));
+		$crud->display_as('actual_start_date', $this->lang->line('actual_start_date'));
+		$crud->display_as('actual_close_date', $this->lang->line('actual_close_date'));
+
+
+		//fields will be displayed in add/edit form
+		$crud->fields('name', 'description', 'start_date', 'close_date', 'actual_start_date', 'actual_close_date');
+
+
+		//$crud->set_subject('Employee');
+
+		
+		//$crud->set_field_upload('icon','assets/uploads/files');
+		if(! $this->has_privilege('read_project_phase'))
+			$crud->unset_read();
+		if(! $this->has_privilege('create_project_phase'))
+			$crud->unset_add();
+		if(! $this->has_privilege('update_project_phase'))
+			$crud->unset_edit();
+		if(! $this->has_privilege('delete_project_phase'))
+			$crud->unset_delete();
+				
+			
+		$output = $crud->render();
+
+		$this->_template($output);
+	}
 
 	/*
 
@@ -1756,234 +1868,6 @@ class Portal extends MY_Controller {
 		$output = $crud->render();
 
 		$this->_template($output);
-	}
-
-	public function offices()
-	{
-		$output = $this->grocery_crud->render();
-
-		$this->_example_output($output);
-	}
-
-	
-
-	public function offices_management()
-	{
-		try{
-			$crud = new grocery_CRUD();
-
-			$crud->set_theme('datatables');
-			$crud->set_table('offices');
-			$crud->set_subject('Office');
-			$crud->required_fields('city');
-			$crud->columns('city','country','phone','addressLine1','postalCode');
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-
-		}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-		}
-	}
-
-	public function employees_management()
-	{
-			$crud = new grocery_CRUD();
-
-			$crud->set_theme('datatables');
-			$crud->set_table('employees');
-			$crud->set_relation('officeCode','offices','city');
-			$crud->display_as('officeCode','Office City');
-			$crud->set_subject('Employee');
-
-			$crud->required_fields('lastName');
-
-			$crud->set_field_upload('file_url','assets/uploads/files');
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function customers_management()
-	{
-			$crud = new grocery_CRUD();
-
-			$crud->set_table('customers');
-			$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
-			$crud->display_as('salesRepEmployeeNumber','from Employeer')
-				 ->display_as('customerName','Name')
-				 ->display_as('contactLastName','Last Name');
-			$crud->set_subject('Customer');
-			$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function orders_management()
-	{
-			$crud = new grocery_CRUD();
-
-			$crud->set_relation('customerNumber','customers','{contactLastName} {contactFirstName}');
-			$crud->display_as('customerNumber','Customer');
-			$crud->set_table('orders');
-			$crud->set_subject('Order');
-			$crud->unset_add();
-			$crud->unset_delete();
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function products_management()
-	{
-			$crud = new grocery_CRUD();
-
-			$crud->set_table('products');
-			$crud->set_subject('Product');
-			$crud->unset_columns('productDescription');
-			$crud->callback_column('buyPrice',array($this,'valueToEuro'));
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function valueToEuro($value, $row)
-	{
-		return $value.' &euro;';
-	}
-
-	public function film_management()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_table('film');
-		$crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
-		$crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
-		$crud->unset_columns('special_features','description','actors');
-
-		$crud->fields('title', 'description', 'actors' ,  'category' ,'release_year', 'rental_duration', 'rental_rate', 'length', 'replacement_cost', 'rating', 'special_features');
-
-		$output = $crud->render();
-
-		$this->_example_output($output);
-	}
-
-	public function film_management_twitter_bootstrap()
-	{
-		try{
-			$crud = new grocery_CRUD();
-
-			$crud->set_theme('twitter-bootstrap');
-			$crud->set_table('film');
-			$crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
-			$crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
-			$crud->unset_columns('special_features','description','actors');
-
-			$crud->fields('title', 'description', 'actors' ,  'category' ,'release_year', 'rental_duration', 'rental_rate', 'length', 'replacement_cost', 'rating', 'special_features');
-
-			$output = $crud->render();
-			$this->_example_output($output);
-
-		}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-		}
-	}
-
-	function multigrids()
-	{
-		$this->config->load('grocery_crud');
-		$this->config->set_item('grocery_crud_dialog_forms',true);
-		$this->config->set_item('grocery_crud_default_per_page',10);
-
-		$output1 = $this->offices_management2();
-
-		$output2 = $this->employees_management2();
-
-		$output3 = $this->customers_management2();
-
-		$js_files = $output1->js_files + $output2->js_files + $output3->js_files;
-		$css_files = $output1->css_files + $output2->css_files + $output3->css_files;
-		$output = "<h1>List 1</h1>".$output1->output."<h1>List 2</h1>".$output2->output."<h1>List 3</h1>".$output3->output;
-
-		$this->_example_output((object)array(
-				'js_files' => $js_files,
-				'css_files' => $css_files,
-				'output'	=> $output
-		));
-	}
-
-	public function offices_management2()
-	{
-		$crud = new grocery_CRUD();
-		$crud->set_table('offices');
-		$crud->set_subject('Office');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function employees_management2()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_theme('datatables');
-		$crud->set_table('employees');
-		$crud->set_relation('officeCode','offices','city');
-		$crud->display_as('officeCode','Office City');
-		$crud->set_subject('Employee');
-
-		$crud->required_fields('lastName');
-
-		$crud->set_field_upload('file_url','assets/uploads/files');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function customers_management2()
-	{
-
-		$crud = new grocery_CRUD();
-
-		$crud->set_table('customers');
-		$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
-		$crud->display_as('salesRepEmployeeNumber','from Employeer')
-			 ->display_as('customerName','Name')
-			 ->display_as('contactLastName','Last Name');
-		$crud->set_subject('Customer');
-		$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
-
-		
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
 	}
 
 	/**/

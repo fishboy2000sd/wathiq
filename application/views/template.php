@@ -293,9 +293,10 @@ h2 {
 				<ul>
 					<li><a href="<?=site_url('portal/projects_management')?>"><span>قائمة المشاريع</span></a></li>
 					<li><a href="<?=site_url('portal/project_status_management')?>"><span>حالة المشروع</span></a></li>
-					<!-- <li><a href="<?=site_url('portal/project_phase_management')?>"><span>مراحل المشروع</span></a></li> -->
+					<li><a href="<?=site_url('portal/phase_management')?>"><span>مراحل المشروع</span></a></li>
 					<!-- <li><a href="<?=site_url('portal/project_subphase_management')?>"><span>مراحل المشروع الفرعية</span></a></li> -->
 					<li><a href="<?=site_url('portal/deliverables_management')?>"><span>التسليمات</span></a></li>
+					<li><a href="<?=site_url('portal/deliverable_status_management')?>"><span>حالات التسليمات</span></a></li>
 				</ul>
 			</li>
 			<?php } ?>
@@ -420,7 +421,7 @@ h2 {
     </div>
   </section>
   <footer>
-    <p class="lf" style="width: 312px">Copyright &#65533; 2015 <a href="#">W<span class="auto-style1">athik</span></a> 
+    <p class="lf" style="width: 312px">Copyright &copy; 2015 <a href="#">W<span class="auto-style1">athik</span></a> 
 	- All Rights Reserved</p>
     <div style="clear:both;"></div>
   </footer>

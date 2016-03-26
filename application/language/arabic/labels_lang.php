@@ -49,6 +49,8 @@
 	$lang['project']			= 'المشروع';
 	$lang['project_name']			= 'اسم المشروع';
 	$lang['project_status_name']			= 'حالة المشروع';
+	$lang['additional_time']			= 'المدة الإضافية المعتمدة للمشروع';
+	
 
 	$lang['privilege']			= 'صلاحية';
 	$lang['privilege_name']			= 'اسم الصلاحية';
@@ -126,6 +128,17 @@
 	
 	$lang['category']			= 'التصنيف';
 	$lang['level']			= 'المستوى';
+
+	$lang['tender']			= 'الطرح';
+	$lang['tender_letter']			= 'خطاب الطرح';
+
+	$lang['award']			= 'الترسية';
+	$lang['award_letter']			= 'خطاب الترسية';
+
+	$lang['implementation']			= 'التنفيذ';
+	$lang['progress']			= 'نسبة تنفيذ المشروع';
+
+	$lang['close']			= 'الإغلاق';
 
 	
 

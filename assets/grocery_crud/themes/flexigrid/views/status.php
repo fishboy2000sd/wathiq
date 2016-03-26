@@ -16,7 +16,7 @@ body {
 }
 .stepwizard {
 	display: table;
-	width: 50%;
+	width: 100%;
 	position: relative;
 }
 .stepwizard-step button[disabled] {
@@ -99,64 +99,86 @@ body {
   </script>
 
 <?php 
-
-	
+//echo "<pre>"; print_r( $extra ); echo "</pre>"; exit;
+	$i = 1 ;
 	$uri2 = $this->ci->uri->segment(2);
 	//print_r($this->ci->uri);
-	//echo $column->project_status_id;
+	//echo $column->project_phase_id;
 	if($uri2 == "projects_management"){
-		$project_status_id =  @$this->project_status_id; 
+		$project_phase_id =  @$this->phase_id;
+		$contract_phase_id =  @$extra['contract_phase_id']; 
 		$uri3 = $this->ci->uri->segment(3);
 
 		//echo "<pre>"; print_r( $this->get_column("name") ); echo "</pre>"; exit;
 
-		//echo "<pre>"; print_r( $input_fields["project_status_id"] ); echo "</pre>"; exit;
+		//echo "<pre>"; print_r( $contract_phase_id ); echo "</pre>"; exit;
 
 		
 
 		if($uri3 == "add" || $uri3 == "edit"){
 			//if($uri3 == "add")
-			//	$project_status_id = 1;
+			//	$project_phase_id = 1;
 			//echo "Initilization";
-			//echo $project_status_id;
+			//echo $project_phase_id;
 ?>
 
 
   <div class="stepwizard col-md-offset-3" style="direction: rtl">
     <div class="stepwizard-row setup-panel">
-          <div class="stepwizard-step">
-        <a href="#step-1" type="button" class="btn btn-primary btn-circle <?php if($project_status_id == 1) echo 'active'; ?>" <?php if($project_status_id != 1) echo "disabled=\"disabled\""; ?>>1</a>
+        
+        <!--<div class="stepwizard-step">
+        <a href="#step-1" type="button" class="btn btn-primary btn-circle <?php if($project_phase_id == 1) echo 'active'; ?>" <?php if($project_phase_id != 1) echo "disabled=\"disabled\""; ?>>1</a>
         <p>الإنشاء</p>
-      </div>
-          <div class="stepwizard-step">
-        <a href="#step-2" type="button" class="btn btn-default btn-circle <?php if($project_status_id == 2) echo 'active'; ?>" <?php if($project_status_id != 2) echo "disabled=\"disabled\""; ?>>
-			  2</a>
-        <p>التصميم</p>
-      </div>
-          <div class="stepwizard-step">
-        <a href="#step-3" type="button" class="btn btn-default btn-circle <?php if($project_status_id == 3) echo 'active'; ?>" <?php if($project_status_id != 3) echo "disabled=\"disabled\""; ?>>
+      	</div> -->
+      	<?php foreach($extra['phases'] as $phase){ ?>
+
+	        <?php if($project_phase_id == $phase->id && $phase->id == 2 && $i = 1){ $i = 1; ?>
+		        <?php foreach($extra['contracts'] as $contract){ ?>
+		        <div class="stepwizard-step">
+		        <a href="#step-2.<?=$i?>" type="button" class="btn btn-default btn-circle <?php if($contract_phase_id == $contract->id) echo 'active'; ?>" <?php if($contract_phase_id != $contract->id) echo "disabled=\"disabled\""; ?>>
+					  <b>2.<?=$i?></b></a>
+		        <p><?=$contract->name?></p>
+		      	</div>
+		        <?php $i++; } ?>
+
+	        <?php }else{ ?>
+	        <div class="stepwizard-step">
+	        <a href="#step-<?=$phase->id?>" type="button" class="btn btn-default btn-circle <?php if($project_phase_id == $phase->id) echo 'active'; ?>" <?php if($project_phase_id != $phase->id) echo "disabled=\"disabled\""; ?>>
+			<b><?=$phase->id?></b>
+			</a>
+	        <p><?=$phase->name?></p>
+	      	</div>
+	      	<?php } ?>
+	    <?php } ?>  	
+        <!-- <div class="stepwizard-step">
+        <a href="#step-3" type="button" class="btn btn-default btn-circle <?php if($project_phase_id == 3) echo 'active'; ?>" <?php if($project_phase_id != 3) echo "disabled=\"disabled\""; ?>>
 			  3</a>
         <p>الطرح </p>
-      </div>
-      <div class="stepwizard-step">
-        <a href="#step-4" type="button" class="btn btn-default btn-circle <?php if($project_status_id == 4) echo 'active'; ?>" <?php if($project_status_id != 4) echo "disabled=\"disabled\""; ?>>
+      	</div>
+
+      	<div class="stepwizard-step">
+        <a href="#step-4" type="button" class="btn btn-default btn-circle <?php if($project_phase_id == 4) echo 'active'; ?>" <?php if($project_phase_id != 4) echo "disabled=\"disabled\""; ?>>
 			  4</a>
         <p>الترسية</p>
         </div>
+
         <div class="stepwizard-step">
-        <a href="#step-5" type="button" class="btn btn-default btn-circle <?php if($project_status_id == 5) echo 'active'; ?>" <?php if($project_status_id != 5) echo "disabled=\"disabled\""; ?>>
+        <a href="#step-5" type="button" class="btn btn-default btn-circle <?php if($project_phase_id == 5) echo 'active'; ?>" <?php if($project_phase_id != 5) echo "disabled=\"disabled\""; ?>>
 			  5</a>
         <p>التنفيذ </p>
-      </div>
-      <div class="stepwizard-step">
-        <a href="#step-5" type="button" class="btn btn-default btn-circle <?php if($project_status_id == 6) echo 'active'; ?>" <?php if($project_status_id != 6) echo "disabled=\"disabled\""; ?>>
+      	</div>
+
+      	<div class="stepwizard-step">
+        <a href="#step-6" type="button" class="btn btn-default btn-circle <?php if($project_phase_id == 6) echo 'active'; ?>" <?php if($project_phase_id != 6) echo "disabled=\"disabled\""; ?>>
 			  6</a>
         <p>الإغلاق </p>
-      </div>
+      	</div> -->
 
-      </div>
+    </div>
 
-        </div>
+    </div>
+
+    <br />
 <?php 
 	}
 

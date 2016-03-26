@@ -3543,6 +3543,14 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 	// This added by me Ahmed Merghani
 	public $ci	= null;
+	// This added by me Ahmed Merghani
+	protected $extra = array();
+	// This added by me Ahmed Merghani
+	public function set_extra($extra)
+    {        
+        $this->extra = $extra;
+        return $this;
+    }
 
 	/**
 	 *
@@ -4758,6 +4766,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 		$data->subject 				= $this->subject;
 		$data->subject_plural 		= $this->subject_plural;
+
+		// This added by Ahmed Merghani
+		$data->extra 				= $this->extra;
 
 		return $data;
 	}
