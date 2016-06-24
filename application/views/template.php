@@ -203,12 +203,12 @@ h2 {
 </style>
 <style type="text/css">
 .top_right {
-	background-image: url('images/top_m_02.jpg');
+	background-image: url(base_url().'/images/top_m_02.jpg');
 	width:499px;
 	height:37px;
 }
 .top_left {
-	background-image: url('images/top_m_01.png');
+	background-image: url(base_url().'/images/top_m_01.png');
 	width:416px;
 	height:37px;
 
@@ -331,7 +331,7 @@ h2 {
 				<a href="#"><span>العقودات</span></a>
 				<ul>
 					<li><a href="<?=site_url('portal/contracts_management')?>"><span>النموذج الزمني</span></a></li>
-					<li><a href="<?=site_url('portal/contract_types_management')?>"><span>أنواع العقودات</span></a></li>
+					<!-- <li><a href="<?=site_url('portal/contract_types_management')?>"><span>أنواع العقودات</span></a></li> -->
 					<li><a href="<?=site_url('portal/contract_categories_management')?>"><span>تصنيف العقودات</span></a></li>
 					<li><a href="<?=site_url('portal/contract_phases_management')?>"><span>مراحل العقودات</span></a></li>
 					<li><a href="<?=site_url('portal/contract_phase_category_list_management')?>"><span>قائمة التسليمات</span></a></li>

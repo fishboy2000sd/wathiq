@@ -239,7 +239,30 @@ class Portal extends MY_Controller {
 	}
 
 	
+	public function next_phase() //$project_id, $phase_id)
+	{
+		//$project_id = $_GET['project_id'];
+		//$phase_id = $_GET['phase_id'];
+		$project_id = $this->input->get('project_id');
+		$phase_id = $this->input->get('phase_id');
+		log_message('INFO', "project_id: $project_id phase_id: $phase_id");
+		
+		if($phase_id < 6){
+			$qry = 'UPDATE project set phase_id = phase_id + 1 where id ='.$project_id;				
+			$query = $this->db->query($qry);
+		}
 
+		//$this->projects_management();
+		redirect('/portal/projects_management', 'refresh');
+	}
+	
+	public function next_phase_url($primary_key , $row)
+	{
+		//log_message('INFO', "url project_id: $primary_key:$row->id phase_id: $row->phase_id");
+		//return site_url('portal/next_phase')."/$row->id/$row->phase_id";
+		return site_url('portal/next_phase')."?project_id=$row->id&phase_id=$row->phase_id";
+		//return site_url('portal/next_phase').'/11/12';
+	}
 	public function projects_management()
 	{
 		
@@ -266,6 +289,7 @@ class Portal extends MY_Controller {
 		$crud->set_subject($this->lang->line('project'));
 		$crud->set_language("arabic"); 
 		$crud->order_by('id','desc');
+		$crud->add_action($this->lang->line('close_phase'), base_url().'/images/complete.gif', '','', array($this,'next_phase_url'));
 		
 		//$crud->callback_before_update(array($this,'update_status_callback'));
 		if($crud->phase_id == 2){
@@ -429,9 +453,8 @@ class Portal extends MY_Controller {
 		$this->_template($output);
 	}
 
-	public function deliverables_status_management()
+	public function deliverable_status_management()
 	{
-		
 		
 		//$this->config->set_item('grocery_crud_dialog_forms',true);
 		$this->config->set_item('grocery_crud_default_per_page',10);

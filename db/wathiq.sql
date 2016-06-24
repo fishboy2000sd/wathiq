@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2016 at 08:36 AM
+-- Generation Time: Jun 24, 2016 at 10:54 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `wathiq`
 --
+CREATE DATABASE IF NOT EXISTS `wathiq` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `wathiq`;
 
 -- --------------------------------------------------------
 
@@ -131,7 +133,8 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('9ff1ac198b2d8573a60f472642460f1d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0', 1458975237, 'a:5:{s:9:"user_data";s:0:"";s:9:"logged_in";b:1;s:8:"username";s:5:"admin";s:7:"user_id";s:1:"1";s:7:"role_id";s:1:"1";}');
+('dc4a0f9069c8f2a5f48b2ea279cb7375', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0', 1466801502, 'a:5:{s:9:"user_data";s:0:"";s:9:"logged_in";b:1;s:8:"username";s:5:"admin";s:7:"user_id";s:1:"1";s:7:"role_id";s:1:"1";}'),
+('e7e10e7a31c40b1d56abcd342562974c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0', 1466799511, '');
 
 -- --------------------------------------------------------
 
@@ -188,7 +191,15 @@ CREATE TABLE IF NOT EXISTS `contract_category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_contract_category_contract_phase1_idx` (`contract_phase_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `contract_category`
+--
+
+INSERT INTO `contract_category` (`id`, `name`, `contract_phase_id`) VALUES
+(1, 'الدراسات الأولية', 1),
+(2, 'الدراسات التخطيطية', 1);
 
 -- --------------------------------------------------------
 
@@ -573,7 +584,7 @@ INSERT INTO `project` (`id`, `name`, `started_date`, `close_date`, `updated_at`,
 (70, 'الترسية', '2015-11-21 00:00:00', '2015-11-30 00:00:00', '2015-11-29 18:58:07', 7, NULL, NULL, 1, 1, 4, '01fd1-rs.txt', 0, 0, 0),
 (71, 'الطرح', '2015-11-28 00:00:00', '2015-11-29 00:00:00', '2015-11-29 19:04:49', 8, NULL, NULL, 1, 1, 3, '3fd05-rs.txt', 0, 0, 0),
 (72, 'التصميم', '2015-11-22 00:00:00', '2015-11-30 00:00:00', '2015-11-29 19:06:47', 15, NULL, NULL, 1, 1, 2, '1d18c-rs.txt', 1, 0, 0),
-(73, 'إنشاء', '2015-11-01 00:00:00', '2015-11-02 00:00:00', '2015-11-29 20:21:31', 8, NULL, NULL, 1, 1, 1, '', 0, 0, 0);
+(73, 'إنشاء', '2015-11-01 00:00:00', '2015-11-02 00:00:00', '2015-11-29 20:21:31', 8, NULL, NULL, 1, 1, 5, '', 0, 0, 0);
 
 -- --------------------------------------------------------
 
